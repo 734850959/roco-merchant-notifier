@@ -2,20 +2,18 @@ name: Roco Merchant Notifier
 
 on:
   schedule:
-    # 北京时间 08:00, 12:00, 16:00, 20:00 刷新
-    # 提前 5 分钟排队 (对应 UTC 23:55, 3:55, 7:55, 11:55)
-    #- cron: '00 00,4,8,12 * * *'
-  workflow_dispatch: 
+    - cron: '0 0,4,8,12 * * *'
+  workflow_dispatch:
 
 jobs:
   run-notifier:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -27,7 +25,6 @@ jobs:
       - name: Install Playwright Browsers & OS Dependencies
         run: |
           playwright install chromium --with-deps
-          # 加上这行中文字体包作为双保险，防止你的本地字体偶尔加载失败
           sudo apt-get install -y fonts-wqy-zenhei
 
       - name: Run Notifier Script
